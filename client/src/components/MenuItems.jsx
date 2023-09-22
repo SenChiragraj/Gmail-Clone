@@ -10,13 +10,23 @@ const MenuItem = () => {
   useEffect(() => {
     (async () => {
       if (currUser) {
-        const respMails = await getMails(currUser.token, mailType); //.getMails(mailType);
-        console.log(respMails); // Use respMails, not mails
-        setMail(respMails);
+        try {
+          const respMails = await getMails(currUser.token, mailType);
+          if (respMails) {
+            // Check if respMails is a valid JSON string
+            try {
+              const parsedMails = JSON.parse(respMails);
+              setMail(parsedMails);
+            } catch (error) {
+              console.error("Error parsing JSON:", error);
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching emails:", error);
+        }
       }
     })();
-
-  }, [mailType]);
+  }, [currUser, mailType]);
 
 
   return (

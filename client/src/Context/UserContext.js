@@ -4,8 +4,9 @@ import { getMails } from "../middleware/Requests";
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const [mails, setMail] = useState([]);
+  const [mails, setMails] = useState([]);
   const [openMail, setOpenMail] = useState({});
+  const [typeChange, setTypeChange] = useState(false);
   const [mailType, setMailType] = useState('inbox');
   const [currUser, setCurrUser] = useState({});
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ const UserProvider = ({ children }) => {
         setCurrUser(userInfo);
         navigate("/inbox");
       } else navigate("/login");
+
+      console.log(currUser);
     })();
   }, [navigate]); // Removed Navigate from the dependency array
 
@@ -34,9 +37,11 @@ const UserProvider = ({ children }) => {
         openMail,
         setOpenMail,
         mails,
-        setMail,
+        setMails,
         mailType,
         setMailType,
+        typeChange,
+        setTypeChange,
       }}
     >
       {children}

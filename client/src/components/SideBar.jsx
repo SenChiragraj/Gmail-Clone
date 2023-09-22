@@ -10,6 +10,7 @@ import { CustomDialog } from "./CustomDialog"; // Replace "./CustomDialog" with 
 const SideBar = () => {
 
  const [dialogOpen, setDialogOpen] = useState(false);
+//  const [success, setSuccess ] = useState();
 
   const handleClick = () => {
     setDialogOpen(true);
@@ -20,15 +21,23 @@ const SideBar = () => {
   };
 
   return (
-    <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'left'} >
-      <Typography color={'white'} margin={2} fontSize={30}>Email</Typography>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      justifyContent={"center"}
+      alignItems={"left"}
+    >
+      <Typography color={"white"} margin={2} fontSize={30}>
+        Email
+      </Typography>
       <CustomDialog open={dialogOpen} handleClose={handleClose} />
       <StyledButton onClick={handleClick}>
-        <AddOutlinedIcon/> Create New Mail
+        <AddOutlinedIcon /> Create New Mail
       </StyledButton>
-      <MenuItem/>
+      <MenuItem />
+
     </Box>
-  )
+  );
 }
 
 export default SideBar
