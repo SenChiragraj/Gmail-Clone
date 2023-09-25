@@ -42,19 +42,34 @@ export const sendUserMail = async (token, mailInfo) => {
   }
 }
 
-export const getMailsFormUser = async (token, keyword) => {
+export const getMailsFormUser = async (user, keyword) => {
   try {
    const response = await fetch(
      `http://localhost:8000/mail/user/inbox`,
      {
        headers: {
-         Authorization: "Bearer " + token,
+         Authorization: "Bearer " + user.token,
          "Content-Type": "application/json",
        },
      }
    ).then((response) => response.json());
-   console.log(response.mails.mails);
-   return response.mails.mails;
+  //  console.log(response.mails.mails);
+  console.log(user.email);
+   if(keyword === 'inbox') return response.mails.mails;
+   else if(keyword === 'sent') {
+    const filtered = response.mails.mails.filter(
+      (mail) => mail.from.email === user.email
+    );
+    console.log(filtered)
+    return filtered;
+   }
+   else  {
+    const filteredMail = response.mails.mails.filter(
+      (mail) => mail.type === keyword
+    );
+    console.log(filteredMail);
+    return filteredMail;
+  }
   } catch (error) {
     return error;
   }

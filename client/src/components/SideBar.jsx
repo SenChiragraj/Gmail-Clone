@@ -4,7 +4,7 @@ import { StyledButton } from '../Styles/StyledComponents';
 
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import MenuItem from '../components/MenuItems';
-import { CustomDialog } from "./CustomDialog"; // Replace "./CustomDialog" with the correct path to your file
+import CustomDialog  from "./CreateMailDialog"; // Replace "./CustomDialog" with the correct path to your file
 
 
 const SideBar = () => {

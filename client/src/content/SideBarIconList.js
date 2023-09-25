@@ -1,13 +1,13 @@
-import { InboxOutlined, DraftsOutlined, ArchiveOutlined, StarBorderOutlined, DeleteOutlineOutlined } from '@mui/icons-material';
+import { InboxOutlined, ArrowOutward, ArchiveOutlined, StarBorderOutlined, DeleteOutlineOutlined } from '@mui/icons-material';
 
-
+// import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 
 const sideBarIcons = [{
   name : 'Inbox',
   element : InboxOutlined
 },{
-  name : 'Drafts',
-  element : DraftsOutlined
+  name : 'Sent',
+  element : ArrowOutward
 },{
   name : 'Delete',
   element : DeleteOutlineOutlined

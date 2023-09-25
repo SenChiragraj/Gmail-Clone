@@ -69,7 +69,7 @@ const NavBar = () => {
           </Badge>
         </Tooltip>
         <Tooltip title="Profile">
-          <Avatar />
+          <Avatar src={currUser.image}/>
         </Tooltip>
         <Box sx={{ '& > p' : { fontSize : '12px' }}}>
           <Typography>{currUser.name}</Typography>

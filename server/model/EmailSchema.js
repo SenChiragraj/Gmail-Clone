@@ -24,7 +24,7 @@ const schema = new mongoose.Schema({
 	},
 	type: {
 		type: String,
-		enum: ["sent", "received", "archive", "deleted", "starred"],
+		enum: ["sent", "received", "archive", "deleted", "starred", "default"],
 		required: true,
 	},
 });

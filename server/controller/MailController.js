@@ -11,7 +11,8 @@ export const getAllMailsOfUser = async (req, res) => {
 		const mails = await User.findById(req.user._id).populate("mails");
 		for (const mail of mails.mails) {
 			// console.log(mail);
-			await mail.populate("to from", "-password -mails");
+			await mail.populate("to", "-password -mails");
+			await mail.populate("from", "-password -mails");
 		}
 		res.status(201).json({ mails });
 	} catch (error) {
@@ -76,11 +77,14 @@ export const addNewMail = async (req, res) => {
 };
 
 export const changeMailType = async (req, res) => {
-	console.log('first');
 	const { type, id } = req.params;
-	console.log(id, type);
 	try {
-		const mail = await Email.findByIdAndUpdate(id, {type: type});
+		const mail = await Email.findByIdAndUpdate(
+			id,{ type: type }
+		);
+		// if(mail.type === type) mail.type = 'inbox';
+		// else mail.type = type;
+		// await mail.save(;)
 		if(mail) return res
 			.status(201)
 			.json({ success: true, message: `Mail status changed`, mail });

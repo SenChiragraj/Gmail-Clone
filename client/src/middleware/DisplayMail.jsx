@@ -4,14 +4,17 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../Context/UserContext";
 import { changeMailType } from "./Requests";
 import { SnackBar } from "../components/SnackBar";
+import ShowMailDialog from "../components/ShowMailDialog";
 
 export const DisplayMail = ({ data }) => {
   const [showSnackBar, setShowSnackBar] = useState(false);
+ const [dialogOpen, setDialogOpen] = useState(false);
   const [snackBarProps, setSnackBarProps] = useState(false);
   const { currUser, setTypeChange, typeChange } = useContext(UserContext);
 
   const formattedDate = data.date?.toLocaleString().split("T")[0];
-  const handleMailChange = async (type, id) => {
+  const handleMailChange = async (e, type, id) => {
+    e.stopPropagation();
     console.log(currUser.token);
     const change = await changeMailType(currUser.token, type, id);
     if(change) setTypeChange(!typeChange);
@@ -24,6 +27,14 @@ export const DisplayMail = ({ data }) => {
     });
   };
 
+  const handleClick = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
   return (
     <>
       <Stack
@@ -33,6 +44,7 @@ export const DisplayMail = ({ data }) => {
         fontSize={10}
         sx={{ margin: "15px" }}
         gap={5}
+        onClick={handleClick}
       >
         <Stack
           direction={"row"}
@@ -42,7 +54,7 @@ export const DisplayMail = ({ data }) => {
         >
           <Avatar
             alt={data.name}
-            src={data.avator}
+            src={data.from.image}
             sizes="large"
             sx={{ width: 50, height: 50 }}
           />
@@ -70,9 +82,7 @@ export const DisplayMail = ({ data }) => {
           alignItems={"end"}
           marginRight={5}
         >
-          <Typography>
-            {formattedDate}
-          </Typography>
+          <Typography>{formattedDate}</Typography>
           <Box
             display={"flex"}
             flexDirection={"row"}
@@ -84,10 +94,10 @@ export const DisplayMail = ({ data }) => {
               },
             }}
           >
-            <div onClick={() => handleMailChange("starred", data._id)}>
+            <div onClick={(e) => handleMailChange(e, "starred", data._id)}>
               {data.type === "starred" ? <Star /> : <StarBorder />}
             </div>
-            <div onClick={() => handleMailChange("delete", data._id)}>
+            <div onClick={(e) => handleMailChange(e, "delete", data._id)}>
               {" "}
               {data.type === "delete" ? <Delete /> : <DeleteOutline />}
             </div>
@@ -95,6 +105,13 @@ export const DisplayMail = ({ data }) => {
         </Box>
       </Stack>
       {showSnackBar && <SnackBar {...snackBarProps} />}
+      {dialogOpen && (
+        <ShowMailDialog
+          mail={data}
+          open={dialogOpen}
+          handleClose={handleClose}
+        />
+      )}
     </>
   );
 };

@@ -3,7 +3,6 @@ import { UserContext } from "../../Context/UserContext";
 import { DisplayMail } from "../../middleware/DisplayMail";
 import { Typography, Box } from "@mui/material";
 import { getMailsFormUser } from "../../middleware/Requests";
-import { SnackBar } from "../SnackBar";
 
 const Inbox = () => {
   const { currUser, mails, mailType, setMails, typeChange } = useContext(UserContext);
@@ -13,7 +12,7 @@ const Inbox = () => {
       // Check if currUser is available
       (async () => {
         try {
-          const fetchMails = await getMailsFormUser(currUser.token, "inbox");
+          const fetchMails = await getMailsFormUser(currUser, mailType.toLowerCase());
 
           if (fetchMails && fetchMails.length > 0) {
             setMails(fetchMails);

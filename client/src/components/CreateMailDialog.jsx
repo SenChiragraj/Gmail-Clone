@@ -1,41 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Input, TextField, Stack, Snackbar, Alert } from "@mui/material";
+import Input from "@mui/material/Input";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 import { UserState } from "../Context/UserContext";
 import { sendUserMail } from "../middleware/Requests";
-import { SnackBar } from "./SnackBar";
+import {SnackBar} from "./SnackBar";
 
-export const CustomDialog = ({ open, handleClose }) => {
+const CustomDialog = ({ open, handleClose }) => {
   const { currUser } = UserState();
   const [userInfo, setUserInfo] = useState({
     to: "",
     subject: "",
     body: "",
   });
-  const [showSnackBar, setShowSnackBar] = useState(false); // State for controlling Snackbar
+  const [showSnackBar, setShowSnackBar] = useState(false);
   const [snackBarProps, setSnackBarProps] = useState({});
+  const draftKey = "emailDraft"; // Key to save draft data in localStorage
+
+  // Load draft data from localStorage when the dialog opens
+  useEffect(() => {
+    const savedDraft = localStorage.getItem(draftKey);
+    if (savedDraft) {
+      setUserInfo(JSON.parse(savedDraft));
+    }
+  }, [open]);
+
+  // Function to save the current email data as a draft
+  const saveDraft = () => {
+    localStorage.setItem(draftKey, JSON.stringify(userInfo));
+  };
+
   const handleSendMail = async () => {
-    const collection = await sendUserMail(currUser.token, userInfo);
-    console.log("collection", collection);
+    try {
+      const collection = await sendUserMail(currUser.token, userInfo);
+      console.log("collection", collection);
 
-    // Show the Snackbar when the "Send" button is pressed
-    setShowSnackBar(true);
-    setSnackBarProps({
-      success: collection,
-      message: collection ? "Mail sent successfully" : "Error in sending Mail!!",
-    });
+      // Clear the draft from localStorage on successful send
+      if (collection) {
+        localStorage.removeItem(draftKey);
+      }
 
-    // Close the dialog
-    handleClose();
+      // Show the Snackbar when the "Send" button is pressed
+      setShowSnackBar(true);
+      setSnackBarProps({
+        success: collection,
+        message: collection
+          ? "Mail sent successfully"
+          : "Error in sending Mail!!",
+      });
+    } catch (error) {
+      console.error("Error sending mail:", error);
+    } finally {
+      // Close the dialog
+      handleClose();
+    }
   };
 
   return (
-    <>
+    <div>
       <Dialog
-        fu
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
@@ -43,13 +70,13 @@ export const CustomDialog = ({ open, handleClose }) => {
         sx={{
           "& .MuiDialog-paper": {
             minHeight: "75%",
-            width: "60%", // Adjust the height as needed
+            width: "100%", // Adjust the height as needed
           },
         }}
       >
         <DialogTitle id="alert-dialog-title">{"Compose Mail"}</DialogTitle>
         <DialogContent>
-          <Stack flexDirection={"column"} gap={2}>
+          <Stack spacing={2}>
             <Input
               placeholder="To"
               disableUnderline
@@ -89,9 +116,9 @@ export const CustomDialog = ({ open, handleClose }) => {
       </Dialog>
 
       {/* Conditionally render the Snackbar */}
-      {showSnackBar && (
-        <SnackBar {...snackBarProps}/>
-      )}
-    </>
+      {showSnackBar && <SnackBar {...snackBarProps} />}
+    </div>
   );
 };
+
+export default CustomDialog;

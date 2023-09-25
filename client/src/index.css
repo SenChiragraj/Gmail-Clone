@@ -22,5 +22,9 @@ code {
   background-color: #1d1e23 !important;
   color: white !important;
   border-radius: 10px !important;
-  
+
+}
+
+.css-ypiqx9-MuiDialogContent-root {
+  padding: 0 10px !important;
 }
