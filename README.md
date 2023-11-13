@@ -14,25 +14,15 @@ Gmail-Clone is a web application that replicates the core features and functiona
 ## Technologies Used
 
 - **Front-End:**
-  - [List of Front-End Technologies/Frameworks]
-
+  - React Js
+  - Tailwind CSS
+  - MUI Components
+    
 - **Back-End:**
-  - [List of Back-End Technologies/Frameworks]
+  - Node JS
+  - Express JS
+  - JWT Tokens
+  - Caching
 
 - **Database:**
-  - [Database System]
-
-- **Real-Time Functionality:**
-  - [Real-Time Technology/Service]
-
-## Installation and Usage
-
-[Provide detailed instructions on how to install and run your Gmail-Clone project locally. Include any specific dependencies, environment setup, or configuration steps.]
-
-## Deployment
-
-[Explain how the project can be deployed to a live environment. Include any necessary steps, cloud service providers, or hosting platforms used.]
-
-## Contributing
-
-[Provide guidelines for others who may want to contribute to your project. This can include information about how to report issues, suggest enhancements, or submit pull requests.]
+  - MongoDB
